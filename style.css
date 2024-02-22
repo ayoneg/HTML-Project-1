@@ -1,0 +1,21 @@
+/* 
+    konecki oktawian | Nr albumu: 53428
+    style css zewnętrzne 
+    10.02.2024
+*/
+textarea {min-width: -webkit-fill-available;height: 75px;resize: vertical;}
+#formularz {width: 550px;background-color: #8D9F;padding: 5px;margin: auto;}
+#opis_kalk{padding: 5px;margin-top: 5px;margin-bottom: 5px;color: mediumblue;font-style: italic;font-weight: 700;}
+fieldset {border: 4PX double #008080;}
+legend {font-weight: bold;color: #D2691E;}
+
+.element_002{display: flex;justify-content: flex-start;} 
+.element_003{display: flex;justify-content: space-between;}
+.odbij_002 {margin-left: 30px;}
+input[type=button] {width: 190px;height:30px;text-align: center;background-color: #B0C4DE;color: #000080;text-shadow: 0px -2px #FFD700;margin:2px;}
+input[type=button]:hover{border-radius: 6%;cursor: crosshair;font-size: 18px;}
+#buttons_box{display: flex;flex-wrap: wrap;justify-content: center;margin: 20px 10px;}
+.endclass{background-color: #66CDAA;color: #DC143C;font-weight: 500;}
+.font_specialclass{font-weight: 700;}
+#kwota_brutto {font-weight: normal;color: black;}
+#kwota_brutto:focus {font-weight: bold;color: #00009C;}

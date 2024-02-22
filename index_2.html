@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<!--
+    konecki oktawian | Nr albumu: 53428
+    plik index.html główy 
+    10.02.2024
+-->
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>konecki oktawian | Nr albumu: 53428</title>
+    <link rel="stylesheet" href="style.css">
+    <script>
+        function liczstart(event) {
+            // Pobierz wartość z pola input
+            var kwotaBruttoInput = document.getElementById('kwota_brutto');
+            var wprowadzonaKwota = parseFloat(kwotaBruttoInput.value);
+
+            // Sprawdź, czy wprowadzona wartość to liczba i jest większa od 200
+            if (isNaN(wprowadzonaKwota) || wprowadzonaKwota < 200) {
+                alert("Wprowadź liczbę większą niż 200 jako kwotę wynagrodzenia brutto.");
+                kwotaBruttoInput.value = "200"; // Wyczyść pole w przypadku błędnych danych
+            }
+            return;
+        }
+
+        function modyfikujOpis() {
+            const text = document.getElementById("opis_kalk")
+            text.innerHTML = "Kalkulator oblicza wynagrodzenie netto z tytułu umowy o dzieło, na podstawie wynagrodzenia brutto powyżej 200 zł w roku podatkowym 2024."
+        } 
+
+        function usuwanie() {
+            var kwotaBruttoInput = document.getElementById('kwota_brutto');
+            kwotaBruttoInput.value = '';
+            kwotaBruttoInput.style.fontWeight = 'normal';
+            kwotaBruttoInput.style.color = 'black';
+        }
+
+        function styluj() {
+            var kwotaBruttoInput = document.getElementById('kwota_brutto');
+            kwotaBruttoInput.style.fontWeight = 'bold';
+            kwotaBruttoInput.style.color = '#00009C';
+        }
+
+        function wykonajObliczenia() {
+            //zobacz czy nie jest < 200
+            liczstart(event)
+
+            // Pobierz wartości z pól formularza
+            var kwotaBrutto = parseFloat(document.getElementById('kwota_brutto').value);
+            var zaliczkaPodatek = parseFloat(document.querySelector('input[name="zaliczka"]:checked').value);
+            let kosztyUzyskania = parseFloat(document.getElementById('wybor').value);
+            var zwolnieniePIT = document.getElementById('zwolnieniePIT').checked;
+
+            // Wykonaj obliczenia
+            if(document.getElementById('wybor').value == "brak"){kosztyUzyskania=0;}
+            var kosztyUzyskaniaPrzychodu = zwolnieniePIT ? 0 : (kwotaBrutto * (kosztyUzyskania / 100));
+            var podstawaOpodatkowania = Math.round(kwotaBrutto - kosztyUzyskaniaPrzychodu);
+            var naliczonyPodatek = Math.round(podstawaOpodatkowania * (zaliczkaPodatek / 100));
+            var wynagrodzenieNetto = zwolnieniePIT ? kwotaBrutto : Math.round(kwotaBrutto - naliczonyPodatek);
+
+            // Aktualizuj pola wynikowe
+            document.getElementById('wynik1').value = kosztyUzyskaniaPrzychodu.toFixed(2);
+            document.getElementById('wynik2').value = podstawaOpodatkowania.toFixed(2);
+            document.getElementById('wynik3').value = naliczonyPodatek.toFixed(2);
+            document.getElementById('wynik4').value = wynagrodzenieNetto.toFixed(2);
+        } 
+
+        function pokazPouczenie() {
+            alert("Jeżeli kwota należności określona w umowie zawartej z osobą niebędącą pracownikiem płatnika nie przekracza 200 zł, w celu prawidłowego obliczenia podatku należy skorzystać z kalkulatora umowy o dzieło opodatkowanej ryczałtem.");
+        }
+
+        function usunDane() {
+            // Wyświetl komunikat przed usunięciem danych
+            var potwierdzenie = confirm("Dane kalkulatora zostaną usunięte! Czy na pewno chcesz kontynuować?");
+
+            // Sprawdź czy użytkownik potwierdził usunięcie
+            if (potwierdzenie) {
+                // Wyczyść wszystkie pola formularza
+                document.getElementById('kwota_brutto').value = "";
+                document.querySelector('input[name="zaliczka"][value="12"]').checked = true;
+                document.getElementById('wybor').value = "20";
+                document.getElementById('zwolnieniePIT').checked = false;
+
+                // Wyczyść pola wynikowe
+                document.getElementById('wynik1').value = "0.00";
+                document.getElementById('wynik2').value = "0.00";
+                document.getElementById('wynik3').value = "0.00";
+                document.getElementById('wynik4').value = "0.00";
+
+                alert("Dane kalkulatora zostały usunięte!");
+            }
+        }
+    </script>
+</head>
+<body>
+    <div id="formularz">
+        <fieldset>
+            <legend>KALKULATOR UMOWY O DZIEŁO</legend>
+            <div id="opis_kalk">Kalkulator oblicza wynagrodzenie netto z tytułu umowy o dzieło, na podstawie wynagrodzenia brutto powyżej 200 zł</div>
+            <div><textarea id="opisshort" placeholder="Krótki opis:"></textarea></div>
+            <div>
+                <div class="element_002">
+                    <div style="margin-right: 15px;">Kwota wynagrodzenia brutto:</div>
+                    <div><input oninput="styluj()" onclick="usuwanie()" id="kwota_brutto" type="number" value="3000.00" required step="any"> zł</div>
+                </div>
+                <div class="element_002">
+                    <div>Zaliczka na podatek:</div>
+                    <div>
+                        <input type="radio" name="zaliczka" checked value="12"> 12%
+                        <input type="radio" name="zaliczka" value="32"> 32%
+                    </div>
+                </div>
+                <div class="element_002">
+                    <div>Koszty uzyskanego przychodu %:</div>
+                    <div>
+                        <select id="wybor" name="wybor">
+                            <option value="20">20%</option>
+                            <option value="50">50%</option>
+                            <option value="brak">Nie przysługują</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="element_002">
+                    <div><input type="checkbox" id="zwolnieniePIT"> Zwolnienie PIT</div>
+                </div>
+            </div>
+            <div id="buttons_box">
+                <input type="button" value="Obliczenia" onclick="wykonajObliczenia()">
+                <input type="button" value="Pouczenie" onclick="pokazPouczenie()">
+                <input type="button" value="Usuwanie" onclick="usunDane()">
+                <input type="button" value="Szczegóły" onmouseover="modyfikujOpis()">
+            </div>
+
+            <fieldset>
+                <legend>Obliczenia:</legend>
+
+                <div class="element_003"><div class="font_specialclass">Koszty uzyskania przychodu:</div> <div class="odbij_002"><input value="0.00" id="wynik1" type="text" disabled> zł</div></div>
+                <div class="element_003"><div class="font_specialclass">Podstawa opodatkowania:</div> <div class="odbij_002"><input value="0.00"  id="wynik2" type="text" disabled> zł</div></div>
+                <div class="element_003"><div class="font_specialclass">Naliczony podatek:</div> <div class="odbij_002"><input value="0.00" id="wynik3" type="text" disabled> zł</div></div>
+                <div class="element_003"><div class="font_specialclass">WYNAGRODZENIE NETTO:</div> <div class="odbij_002"><input value="0.00" class="endclass" id="wynik4" type="text" disabled> zł</div></div>
+            </fieldset>
+
+        </fieldset>
+    </div>
+</body>
+</html>
